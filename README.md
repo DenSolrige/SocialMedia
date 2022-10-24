@@ -1,4 +1,4 @@
-# SocialMedia
+# Updoot SocialMedia App
 
 Schema for the PostgreSQL Database:
 
