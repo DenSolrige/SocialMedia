@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -16,11 +18,40 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int replyId;
     private String content;
-    private int updoot;
+    private long date = 0;
+    private boolean edited = false;
 
     @ManyToOne
+    @JoinColumn(name = "postId")
     private Post post;
 
     @ManyToOne
-    private Account account;
+    @JoinColumn(name = "accountId")
+    private Account author;
+
+    @ManyToMany(mappedBy = "likedReplies")
+    private Set<Account> likes;
+
+    @ManyToMany(mappedBy = "dislikedReplies")
+    private Set<Account> dislikes;
+
+    public Reply(int replyId, String content, Post post, Account author, long date) {
+        this.replyId = replyId;
+        this.content = content;
+        this.post = post;
+        this.author = author;
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Reply{" +
+                "replyId=" + replyId +
+                ", content='" + content + '\'' +
+                ", date=" + new Date(date * 1000) +
+                ", edited=" + edited +
+                ", post=" + post.getTitle() +
+                ", author=" + author.getUsername() +
+                '}';
+    }
 }
