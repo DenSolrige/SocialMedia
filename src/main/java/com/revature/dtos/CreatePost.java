@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdatePost {
-    private int postId;
+public class CreatePost {
     private String title;
     private String content;
 }

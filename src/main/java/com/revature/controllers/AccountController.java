@@ -25,19 +25,35 @@ public class AccountController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/{username}/post")
+    @GetMapping("/{username}/posts")
     public ResponseEntity<List<PostInfo>> getAccountPosts(@RequestHeader(required = false,name = "user") String jwt,@PathVariable("username") String username){
         Optional<Account> requestingUser = this.loginService.getRequestingUser(jwt);
         List<Post> posts = this.accountService.getAccountPosts(username);
-        List<PostInfo> postInfoList = requestingUser.map(account -> posts.stream().map(post -> new PostInfo(post, account)).collect(Collectors.toList())).orElseGet(() -> posts.stream().map(PostInfo::new).collect(Collectors.toList()));
+        List<PostInfo> postInfoList = requestingUser.map(
+                account -> posts
+                        .stream()
+                        .map(post -> new PostInfo(post, account))
+                        .collect(Collectors.toList()))
+                .orElseGet(() -> posts
+                        .stream()
+                        .map(PostInfo::new)
+                        .collect(Collectors.toList()));
         return ResponseEntity.ok().body(postInfoList);
     }
 
-    @GetMapping("/{username}/reply")
+    @GetMapping("/{username}/replies")
     public ResponseEntity<List<ReplyInfo>> getAccountReplies(@RequestHeader(required = false,name = "user") String jwt,@PathVariable("username") String username){
         Optional<Account> requestingUser = this.loginService.getRequestingUser(jwt);
         List<Reply> replies = this.accountService.getAccountReplies(username);
-        List<ReplyInfo> replyInfoList = requestingUser.map(account -> replies.stream().map(reply -> new ReplyInfo(reply, account)).collect(Collectors.toList())).orElseGet(() -> replies.stream().map(ReplyInfo::new).collect(Collectors.toList()));
+        List<ReplyInfo> replyInfoList = requestingUser.map(
+                account -> replies
+                        .stream()
+                        .map(reply -> new ReplyInfo(reply, account))
+                        .collect(Collectors.toList()))
+                .orElseGet(() -> replies
+                        .stream()
+                        .map(ReplyInfo::new)
+                        .collect(Collectors.toList()));
         return ResponseEntity.ok().body(replyInfoList);
     }
 }

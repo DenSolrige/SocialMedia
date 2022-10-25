@@ -3,13 +3,16 @@ package com.revature.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "account")
+@EqualsAndHashCode(of = "accountId")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,28 +31,28 @@ public class Account {
             name = "liked_post",
             joinColumns = @JoinColumn(name = "accountId"),
             inverseJoinColumns = @JoinColumn(name = "postId"))
-    private List<Post> likedPosts;
+    private Set<Post> likedPosts = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "liked_reply",
             joinColumns = @JoinColumn(name = "accountId"),
             inverseJoinColumns = @JoinColumn(name = "replyId"))
-    private List<Reply> likedReplies;
+    private Set<Reply> likedReplies = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "disliked_post",
             joinColumns = @JoinColumn(name = "accountId"),
             inverseJoinColumns = @JoinColumn(name = "postId"))
-    private List<Post> dislikedPosts;
+    private Set<Post> dislikedPosts = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "disliked_reply",
             joinColumns = @JoinColumn(name = "accountId"),
             inverseJoinColumns = @JoinColumn(name = "replyId"))
-    private List<Reply> dislikedReplies;
+    private Set<Reply> dislikedReplies = new HashSet<>();
 
     public Account(String username, String password) {
         this.username = username;

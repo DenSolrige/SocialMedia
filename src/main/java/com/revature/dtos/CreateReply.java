@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateReply {
-    private int replyId;
+public class CreateReply {
     private String content;
 }

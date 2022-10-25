@@ -2,10 +2,12 @@ package com.revature.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "post")
+@EqualsAndHashCode(of = "postId")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +34,10 @@ public class Post {
     private Account author;
 
     @ManyToMany(mappedBy = "likedPosts")
-    private Set<Account> likes;
+    private Set<Account> likes = new HashSet<>();
 
     @ManyToMany(mappedBy = "dislikedPosts")
-    private Set<Account> dislikes;
+    private Set<Account> dislikes = new HashSet<>();
 
     public Post(String title, String content, Account author, long date) {
         this.title = title;
