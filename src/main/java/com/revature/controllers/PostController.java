@@ -59,7 +59,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostInfo> createPost(@RequestHeader(name = "user") String jwt, CreatePost createPost){
+    public ResponseEntity<PostInfo> createPost(@RequestHeader(name = "user") String jwt, @RequestBody CreatePost createPost){
         Optional<Account> requestingUser = this.loginService.getRequestingUser(jwt);
         return requestingUser.map(
                 account -> ResponseEntity
@@ -76,7 +76,7 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/replies")
-    public ResponseEntity<ReplyInfo> createReply(@RequestHeader(name = "user") String jwt, CreateReply createReply,@PathVariable("postId") int postId){
+    public ResponseEntity<ReplyInfo> createReply(@RequestHeader(name = "user") String jwt, @RequestBody CreateReply createReply,@PathVariable("postId") int postId){
         Optional<Account> requestingUser = this.loginService.getRequestingUser(jwt);
         return requestingUser.map(
                 account -> ResponseEntity
@@ -91,7 +91,7 @@ public class PostController {
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<PostInfo> editPost(@RequestHeader(name = "user") String jwt, @PathVariable("postId") int postId,CreatePost updatePost){
+    public ResponseEntity<PostInfo> editPost(@RequestHeader(name = "user") String jwt, @PathVariable("postId") int postId, @RequestBody CreatePost updatePost){
         Optional<Account> requestingUser = this.loginService.getRequestingUser(jwt);
         if(requestingUser.isPresent() && requestingUser.get().getPosts().stream().anyMatch(post -> post.getPostId()==postId)){
             return ResponseEntity

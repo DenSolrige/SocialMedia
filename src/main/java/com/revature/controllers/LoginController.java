@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.dtos.JwtInfo;
 import com.revature.dtos.LoginCredentials;
 import com.revature.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class LoginController {
     LoginService loginService;
 
     @PostMapping
-    public String login(@RequestBody LoginCredentials loginCredentials){
+    public JwtInfo login(@RequestBody LoginCredentials loginCredentials){
         return loginService.authenticateUser(loginCredentials);
     }
 }

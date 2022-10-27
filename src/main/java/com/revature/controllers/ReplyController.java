@@ -23,7 +23,7 @@ public class ReplyController {
     LoginService loginService;
 
     @PatchMapping("/{replyId}")
-    public ResponseEntity<ReplyInfo> editReply(@RequestHeader(name = "user") String jwt, @PathVariable("replyId") int replyId,CreateReply updateReply){
+    public ResponseEntity<ReplyInfo> editReply(@RequestHeader(name = "user") String jwt, @PathVariable("replyId") int replyId, @RequestBody CreateReply updateReply){
         Optional<Account> requestingUser = this.loginService.getRequestingUser(jwt);
         if(requestingUser.isPresent() && requestingUser.get().getReply().stream().anyMatch(reply -> reply.getReplyId()==replyId)){
             return ResponseEntity.ok().body(new ReplyInfo(this.replyService.updateReply(replyId,updateReply)));

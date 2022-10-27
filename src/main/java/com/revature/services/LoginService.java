@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.auth0.jwt.JWT;
+import com.revature.dtos.JwtInfo;
 import com.revature.dtos.LoginCredentials;
 import com.revature.entities.Account;
 import com.revature.repos.AccountRepository;
@@ -16,11 +17,11 @@ public class LoginService {
     @Autowired
     JwtValidationService jwtService;
 
-    public String authenticateUser(LoginCredentials loginCredentials){
+    public JwtInfo authenticateUser(LoginCredentials loginCredentials){
         Optional<Account> account = accountRepository.findByUsername(loginCredentials.getUsername());
         if(account.isPresent()){
             if(account.get().getPassword().equals(loginCredentials.getPassword())){
-                return jwtService.createJwtWithUsername(loginCredentials.getUsername());
+                return new JwtInfo(jwtService.createJwtWithUsername(loginCredentials.getUsername()), loginCredentials.getUsername());
             }else{
                 throw new RuntimeException("Incorrect password");
             }
